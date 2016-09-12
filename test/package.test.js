@@ -43,7 +43,6 @@ describe('oauth2orize', function() {
     expect(oauth2orize.TokenError).to.be.a('function');
   });
 
-
   describe('.createServer', function() {
     it('should return a server', function() {
       var s = oauth2orize.createServer();

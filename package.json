@@ -33,7 +33,6 @@
   "dependencies": {
     "debug": "2.x.x",
     "koa-compose": "^3.0.0",
-    "koa-convert": "1.2.0",
     "uid2": "0.0.x",
     "utils-merge": "1.x.x"
   },

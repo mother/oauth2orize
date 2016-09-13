@@ -43,7 +43,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -71,7 +71,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -99,7 +99,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -127,7 +127,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -155,7 +155,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -191,7 +191,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh', scope: 'read' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -228,7 +228,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh', scope: 'read', audience: 'https://www.example.com/' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -264,7 +264,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh', scope: 'read write' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -292,7 +292,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -318,7 +318,7 @@ describe('exchange.password', function() {
       ctx.request.body = { password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -344,7 +344,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -370,7 +370,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -394,7 +394,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -416,7 +416,7 @@ describe('exchange.password', function() {
       ctx.state.user = { id: 'c123', name: 'Example' };
 
       try {
-        await password(issue)(ctx);
+        await password(issue).call(ctx);
       } catch (e) {
         err = e;
       }
@@ -448,7 +448,7 @@ describe('exchange.password', function() {
         ctx.request.body = { username: 'bob', password: 'shh', scope: 'read,write' };
 
         try {
-          await password({ scopeSeparator: ',' }, issue)(ctx);
+          await password({ scopeSeparator: ',' }, issue).call(ctx);
         } catch (e) {
           err = e;
         }
@@ -486,7 +486,7 @@ describe('exchange.password', function() {
         ctx.request.body = { username: 'bob', password: 'shh', scope: 'read write' };
 
         try {
-          await password({ scopeSeparator: [' ', ','] }, issue)(ctx);
+          await password({ scopeSeparator: [' ', ','] }, issue).call(ctx);
         } catch (e) {
           err = e;
         }
@@ -514,7 +514,7 @@ describe('exchange.password', function() {
         ctx.request.body = { username: 'bob', password: 'shh', scope: 'read,write' };
 
         try {
-          await password({ scopeSeparator: [' ', ','] }, issue)(ctx);
+          await password({ scopeSeparator: [' ', ','] }, issue).call(ctx);
         } catch (e) {
           err = e;
         }
@@ -543,7 +543,7 @@ describe('exchange.password', function() {
       ctx.request.body = { username: 'bob', password: 'shh' };
 
       try {
-        await password({ userProperty: 'client' }, issue)(ctx);
+        await password({ userProperty: 'client' }, issue).call(ctx);
       } catch (e) {
         err = e;
       }

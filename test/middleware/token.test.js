@@ -39,7 +39,7 @@ describe('token', function() {
       ctx.request.body = { grant_type: 'authorization_code', code: 'abc123' };
 
       try{
-        await token(server)(ctx);
+        await token(server).call(ctx);
       } catch(e) {
         err = e;
       }
@@ -60,7 +60,7 @@ describe('token', function() {
       ctx.request.body = { grant_type: 'foo', code: 'abc123' };
 
       try{
-        await token(server)(ctx);
+        await token(server).call(ctx);
       } catch(e) {
         err = e;
       }
@@ -84,7 +84,7 @@ describe('token', function() {
       ctx.request.body = { grant_type: 'next-error', code: 'abc123' };
 
       try{
-        await token(server)(ctx);
+        await token(server).call(ctx);
       } catch(e) {
         err = e;
       }

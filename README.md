@@ -8,7 +8,7 @@
 
 This is a complete koa port of [OAuth2orize](https://github.com/jaredhanson/oauth2orize).
 OAuth2orize is an authorization server toolkit for Node.js.  It provides a suite
-of [koa v2](https://github.com/koajs/koa) middleware that can be used
+of [koa v1](http://koajs.com/) middleware that can be used
 to assemble a server that implements the [OAuth 2.0](http://tools.ietf.org/html/rfc6749)
 protocol.
 
@@ -72,18 +72,18 @@ When a client requests authorization, it will redirect the user to an
 authorization endpoint.  The server must authenticate the user and obtain
 their permission.
 
-    router.get('/dialog/authorize',
-      login.ensureLoggedIn(),
-      server.authorize(async function(clientID, redirectURI) {
-        var client = await Clients.findOne(clientID);
-        if (!client) { return false; }
-        if (!client.redirectUri != redirectURI) { return false; }
-        return [client, client.redirectURI];
-      }),
-      function(ctx) {
-        res.render('dialog', { transactionID: ctx.state.oauth2.transactionID,
-                               user: ctx.state.user, client: ctx.state.oauth2.client });
-      });
+    router.get('/dialog/authorize', function *(next) {
+        yield login.ensureLoggedIn()
+        yield server.authorize(async function(clientID, redirectURI) {
+          var client = await Clients.findOne(clientID);
+          if (!client) { return false; }
+          if (!client.redirectUri != redirectURI) { return false; }
+          return [client, client.redirectURI];
+        })
+        yield function *(next) {
+          res.render('dialog', { transactionID: this.state.oauth2.transactionID,
+                                 user: this.state.user, client: this.state.oauth2.client });
+        });
 
 In this example, [connect-ensure-login](https://github.com/jaredhanson/connect-ensure-login)
 middleware is being used to make sure a user is authenticated before
@@ -91,9 +91,10 @@ authorization proceeds.  At that point, the application renders a dialog
 asking the user to grant access.  The resulting form submission is processed
 using `decision` middleware.
 
-     router.post('/dialog/authorize/decision',
-       login.ensureLoggedIn(),
-       server.decision());
+     router.post('/dialog/authorize/decision', function *(next) {
+       yield login.ensureLoggedIn()
+       yield server.decision()
+     })
 
 Based on the grant type requested by the client, the appropriate grant
 module registered above will be invoked to issue an authorization code.
@@ -120,10 +121,11 @@ by ID when deserializing.
 Once a user has approved access, the authorization grant can be exchanged by the
 client for an access token.
 
-    router.post('/token',
-      passport.authenticate(['basic', 'oauth2-client-password'], { session: false }),
-      server.token(),
-      server.errorHandler());
+    router.post('/token', function* (next) {
+      yield passport.authenticate(['basic', 'oauth2-client-password'], { session: false })
+      yield server.token()
+      server.errorHandler()
+    });
 
 [Passport](http://passportjs.org/) strategies are used to authenticate the
 client, in this case using either an HTTP Basic authentication header (as
@@ -140,11 +142,11 @@ registered above will be invoked to issue an access token.  If an error occurs,
 Once an access token has been issued, a client will use it to make API requests
 on behalf of the user.
 
-    router.get('/api/userinfo',
-      passport.authenticate('bearer', { session: false }),
-      function(ctx) {
-        ctx.body = req.user;
-      });
+    router.get('/api/userinfo', function* (next) {
+      yield passport.authenticate('bearer', { session: false })
+      yield (return function *(next) {
+        this.body = req.user;
+      }));
 
 In this example, bearer tokens are issued, which are then authenticated using
 an HTTP Bearer authentication header (as provided by [passport-http-bearer](https://github.com/jaredhanson/passport-http-bearer))
